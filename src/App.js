@@ -3,13 +3,19 @@ import { Route, Redirect, Swith, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button } from 'antd-mobile';
 
+import Cate from '~/cate'
+import { Switch } from '../node_modules/antd';
+
 class App extends Component{
     render() {
         return (
             <div>
-                <Button type = "primary"> primary </Button>
-
+                      
+                    <Route path='/cate' component={Cate}></Route> 
+                    test                         
             </div>
+
+           
         )
     }
 };
