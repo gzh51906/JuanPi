@@ -32,7 +32,7 @@ module.exports = {
             // 配置文件编译规则（每一种文件必须配置一个loader）
             {
                 test:/\.jsx?$/,
-                
+
                 // include/exclude包含/排除
                 // exclude:'node_modules',
                 include:path.resolve(__dirname,'./src'),
@@ -41,11 +41,11 @@ module.exports = {
                     options:{
                         presets:['@babel/preset-react'],
                         plugins:[
-                            // ["import", {
-                            //   "libraryName": "antd",
-                            //   "libraryDirectory": "es",
-                            //   "style": "css" // `style: true` 会加载 less 文件
-                            // }],
+                            ["import", {
+                              "libraryName": "antd",
+                              "libraryDirectory": "es",
+                              "style": "css" // `style: true` 会加载 less 文件
+                            },'antdpc'],
                             ['@babel/plugin-proposal-decorators',{legacy: true}],
                             '@babel/plugin-proposal-class-properties',
                             ["import", { libraryName: "antd-mobile", style: "css" }] // `style: true` 会加载 less 文件
