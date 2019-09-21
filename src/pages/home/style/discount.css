@@ -1,0 +1,36 @@
+.discount {
+    overflow: hidden;
+}
+
+.second {
+    width: 50%;
+    height: 50%;
+    float: left;
+}
+
+.second img {
+    width: 100%;
+    height: 100%;
+}
+
+.clear {
+    float: left;
+    width: 50%;
+    height: 25%;
+}
+
+.clear img {
+    width: 100%;
+    height: 100%;
+}
+
+.cheap {
+    float: left;
+    width: 50%;
+    height: 25%;
+}
+
+.cheap img {
+    width: 100%;
+    height: 100%;
+}

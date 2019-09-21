@@ -1,0 +1,17 @@
+.am-grid-item-content {
+    padding: 0 !important;
+}
+
+.am-tabs-default-bar-underline {
+    border: 1px red solid;
+}
+.priceBox span{
+    color:red ;
+    font-size: 14px;
+}
+.priceBox del{
+    color:#666;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
