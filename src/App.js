@@ -13,6 +13,7 @@ import List from './pages/list';
 import SearchPage from './pages/home/components/searchPage'
 
 import './App.css';
+
 class App extends Component{
     state = {
         current: 'home',
