@@ -274,7 +274,7 @@ Router.patch('/:id', (req, res) => {
                 _id: id
             }, {
                     $set: {
-                        inventory:Number(inventory)
+                        inventory: Number(inventory)
                     }
                 })
         }
@@ -350,7 +350,7 @@ Router.get('/list', async (req, res) => {
             colname = 'nvzgoods';
 
             break;
-             case '男装':
+        case '男装':
             colname = 'nanzgoods';
             break;
         case '母婴':
@@ -394,7 +394,7 @@ Router.get('/list', async (req, res) => {
     }
 
 
-    let data = await find(colname, {"middletitle" : middletitle}, {
+    let data = await find(colname, { "middletitle": middletitle }, {
         skip,
         limit,
         sort,
@@ -421,35 +421,35 @@ Router.get('/like', async (req, res) => {
         asc,
         select
     } = req.query;
-//     let allcolname = ['nvzgoods', 'nanzgoods', 'muygoods', 'xiezgoods',
-//         'xiangbgoods', 'jujbhgoods', 'jiadsmgoods', 'neiypsgoods', 'meizgoods', 'chepwygoods', 'tongxlygoods']
-  
-//   let qq=[]
-//     let data = allcolname.map(async (item) => {
-//         let list = await find(item, { "name":{$regex:select} }, {});    
-//         console.log('list',...list);
-//         // qq=[..]].qq,...list]
-//          return list
-    
-//     })
-    
-async function SelectAll(){
-    let list1 = await find('nvzgoods', { "name":{$regex:select} }, { skip,limit, sort,asc});     
-    let list2 = await find('nanzgoods', { "name":{$regex:select} },{ skip,limit, sort,asc});
-    let list3 = await find('muygoods', { "name":{$regex:select} }, { skip,limit, sort,asc});
-    let list4 = await find('xiezgoods', { "name":{$regex:select} },{ skip,limit, sort,asc});
-    let list5 = await find('xiangbgoods', { "name":{$regex:select} },{ skip,limit, sort,asc});
-    let list6 = await find('jujbhgoods', { "name":{$regex:select} },{ skip,limit, sort,asc});   
-    let list7 = await find('meizgoods', { "name":{$regex:select} },{ skip,limit, sort,asc});
-    let list8 = await find('jiadsmgoods', { "name":{$regex:select} },{ skip,limit, sort,asc});
-    let list9 = await find('neiypsgoods', { "name":{$regex:select} },{ skip,limit, sort,asc});
-    let list10 = await find('chepwygoods', { "name":{$regex:select} },{ skip,limit, sort,asc});
-    let list11 = await find('tongxlygoods', { "name":{$regex:select} },{ skip,limit, sort,asc});
+    //     let allcolname = ['nvzgoods', 'nanzgoods', 'muygoods', 'xiezgoods',
+    //         'xiangbgoods', 'jujbhgoods', 'jiadsmgoods', 'neiypsgoods', 'meizgoods', 'chepwygoods', 'tongxlygoods']
 
-    return [...list1,...list2,...list3,...list4,...list5,...list6,...list7,...list8,...list9,...list10,...list11]
-}
+    //   let qq=[]
+    //     let data = allcolname.map(async (item) => {
+    //         let list = await find(item, { "name":{$regex:select} }, {});    
+    //         console.log('list',...list);
+    //         // qq=[..]].qq,...list]
+    //          return list
 
-let data =await SelectAll()
+    //     })
+
+    async function SelectAll() {
+        let list1 = await find('nvzgoods', { "name": { $regex: select } }, { skip, limit, sort, asc });
+        let list2 = await find('nanzgoods', { "name": { $regex: select } }, { skip, limit, sort, asc });
+        let list3 = await find('muygoods', { "name": { $regex: select } }, { skip, limit, sort, asc });
+        let list4 = await find('xiezgoods', { "name": { $regex: select } }, { skip, limit, sort, asc });
+        let list5 = await find('xiangbgoods', { "name": { $regex: select } }, { skip, limit, sort, asc });
+        let list6 = await find('jujbhgoods', { "name": { $regex: select } }, { skip, limit, sort, asc });
+        let list7 = await find('meizgoods', { "name": { $regex: select } }, { skip, limit, sort, asc });
+        let list8 = await find('jiadsmgoods', { "name": { $regex: select } }, { skip, limit, sort, asc });
+        let list9 = await find('neiypsgoods', { "name": { $regex: select } }, { skip, limit, sort, asc });
+        let list10 = await find('chepwygoods', { "name": { $regex: select } }, { skip, limit, sort, asc });
+        let list11 = await find('tongxlygoods', { "name": { $regex: select } }, { skip, limit, sort, asc });
+
+        return [...list1, ...list2, ...list3, ...list4, ...list5, ...list6, ...list7, ...list8, ...list9, ...list10, ...list11]
+    }
+
+    let data = await SelectAll()
 
     res.send(formatData({
         data
@@ -458,11 +458,24 @@ let data =await SelectAll()
 
 })
 
+// 列表页导航
+Router.get('/listnav', async (req, res) => {
+    let data = await find('listgoods', {}, {})
+    res.send(formatData({
+        data
+    }))
+})
+
+
+
+
+
+
 
 //获取单个   必须传的参数为 title大分类 
 Router.get('/:id', async (req, res) => {
 
-    
+
     let {
         id
     } = req.params;
