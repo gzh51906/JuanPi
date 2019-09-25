@@ -1,0 +1,12 @@
+.logo{
+    position: absolute;
+    left: 50px;
+}
+.home-title{
+    font-size: 30px;
+    font-weight: 600;
+    color: #ffffff
+}
+.home-bottom{
+    background: #ffffff;
+}

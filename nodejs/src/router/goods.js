@@ -98,7 +98,26 @@ Router.post('/add', async (req, res) => {
     }
 })
 
+// 列表页导航
+Router.delete('/listnav', (req, res) => {
 
+    let {
+        colname,
+        id
+
+    } = req.query;
+
+    try {
+        remove(colname, {
+            _id: id
+        })
+        res.send(formatData())
+    } catch (err) {
+        res.send(formatData({
+            code: 0
+        }))
+    }
+})
 
 // 后台删除商品
 Router.delete('/:id', (req, res) => {
@@ -460,6 +479,69 @@ Router.get('/like', async (req, res) => {
 
 // 列表页导航
 Router.get('/listnav', async (req, res) => {
+
+    let data = await find('listgoods', {}, {})
+    res.send(formatData({
+        data
+    }))
+})
+
+// 列表页修改
+Router.patch('/listnav/:id', async (req, res) => {
+    let {
+        id
+    } = req.params;
+    ;
+
+    let {
+        title,
+        middletitle,
+        imgurl
+    } = req.body.params
+
+    console.log(req.body.params)
+    try {
+        if (title) {
+            update("listgoods", {
+                _id: id
+            }, {
+                    $set: {
+                        title: title
+                    }
+                })
+        }
+
+        if (middletitle) {
+            update("listgoods", {
+                _id: id
+            }, {
+                    $set: {
+                        middletitle: middletitle
+                    }
+                })
+        }
+        if (imgurl) {
+            update("listgoods", {
+                _id: id
+            }, {
+                    $set: {
+                        imgurl: imgurl
+                    }
+                })
+        }
+
+
+        res.send(formatData())
+
+    } catch (err) {
+
+        res.send(formatData({
+            code: 0
+        }))
+    }
+
+
+
     let data = await find('listgoods', {}, {})
     res.send(formatData({
         data
