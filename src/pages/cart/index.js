@@ -1,5 +1,4 @@
 import React,{Component} from 'react'
-import  {render} from 'react-dom'
 import { NavBar, Icon, List, Checkbox,Button ,Stepper} from 'antd-mobile';
 const CheckboxItem = Checkbox.CheckboxItem;
 const AgreeItem = Checkbox.AgreeItem;
@@ -9,7 +8,6 @@ class Cart extends Component {
     constructor(){
         super()
         this.state={
-
             data:[
                 { value: 0, label: 'Ph.D.' },
         { value: 1, label: 'Bachelor' },
@@ -178,31 +176,3 @@ export default Cart
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import React, {Component} from 'react';
-
-class Cart extends Component{
-    render() {
-        return (
-            <div>CART</div>
-        )
-    }
-};
-
-export default Cart;

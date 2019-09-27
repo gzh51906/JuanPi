@@ -11,6 +11,6 @@ render(
     <HashRouter>
     <App/>
     </HashRouter>
-    </Provider>  ,
+    </Provider>,
     document.querySelector('#app')
 )

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {BackTop, Button} from 'antd-mobile';
 import { TabBar } from 'antd-mobile';
 import { Icon } from 'antd';
+
 import Home from './pages/home';
 import Reg from './pages/reg';
 import Login from './pages/login';
@@ -13,42 +14,38 @@ import Cart from './pages/cart';
 import List from './pages/list';
 import SearchPage from './pages/home/components/searchPage'
 
+import Cate from '~/cate'
+
+
 
 import './App.css';
+
 class App extends Component{
-
-
-
-
-
-    render() {
-        let div = <>
-            <div>
-
-                state = {
-                current: 'home',
-                menu: [{
-                name: 'home',
-                path: '/home',
-                title: '首页',
-                icon: 'bank'
-            }, {
-                name: 'list',
-                path: '/list',
-                title: '分类',
-                icon: 'table'
-            }, {
-                name: 'cart',
-                path: '/cart',
-                title: '购物车',
-                icon: 'shopping-cart'
-            }, {
-                name: 'mine',
-                path: '/mine',
-                title: '我的卷皮',
-                icon: 'user'
-            }]
-            }
+    state = {
+        current: 'home',
+        menu: [{
+        name: 'home',
+        path: '/home',
+        title: '首页',
+        icon: 'bank'
+    }, {
+        name: 'list',
+        path: '/list',
+        title: '分类',
+        icon: 'table'
+    }, {
+        name: 'cart',
+        path: '/cart',
+        title: '购物车',
+        icon: 'shopping-cart'
+    }, {
+        name: 'mine',
+        path: '/mine',
+        title: '我的卷皮',
+        icon: 'user'
+    }]
+    }
+  
                 render() {
                 return (
                 <div>
@@ -85,6 +82,7 @@ class App extends Component{
 
                 <div>
                 <Switch>
+                <Route path='/cate' component={Cate}></Route> 
                 <Route path='/home' component={Home}/>
                 <Route path='/reg' component={Reg}/>
                 <Route path='/login' component={Login}/>
