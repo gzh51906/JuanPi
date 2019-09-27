@@ -486,6 +486,25 @@ Router.get('/listnav', async (req, res) => {
     }))
 })
 
+// 列表页添加
+Router.post('/listnav', async (req, res) => {
+let {title,middletitle,imgurl} = req.body
+    try {
+        insert("listgoods", {
+            title,         //大分类
+            middletitle,    // 中分类
+            imgurl
+
+        })
+        res.send(formatData())
+    }catch(err){
+        res.send(formatData({
+            code: 0
+        }))
+    }
+
+})
+
 // 列表页修改
 Router.patch('/listnav/:id', async (req, res) => {
     let {
