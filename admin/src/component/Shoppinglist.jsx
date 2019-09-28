@@ -205,6 +205,9 @@ class Shopping extends Component {
         this.setState({
             show: "none"
         })
+        this.setState({
+            text:{}
+        })
     }
 
     onChangeValue(name, e) {

@@ -139,12 +139,9 @@ class Fenleilist extends Component {
 
     }
     changecon(text) {
-
         this.setState({
             show: "block"
         })
-
-
         this.setState({
             text
         })
@@ -166,6 +163,9 @@ class Fenleilist extends Component {
         this.setState({
             show: "none"
         })
+        this.setState({
+            text:{}
+        })
     }
 
     onChangeValue(name, e) {
@@ -181,20 +181,27 @@ class Fenleilist extends Component {
 
 
     removeItem(text) {
+        var r = confirm("确定删除？");
+        if (r == true) {
+            api.removegood('/listnav', {
+                id: text.key,
+                colname: "listgoods"
+            })
+    
+    
+            let res = this.state.data.filter(item => {
+                return item.key != text.key
+            })
+            this.setState({
+                data: res
+            })
+            alert('删除成功')
+        } else {
+          
+        }
 
-        api.removegood('/listnav', {
-            id: text.key,
-            colname: "listgoods"
-        })
-
-
-        let res = this.state.data.filter(item => {
-            return item.key != text.key
-        })
-        this.setState({
-            data: res
-        })
-        alert('删除成功')
+       
+     
 
     }
     render() {

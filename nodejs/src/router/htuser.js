@@ -5,7 +5,7 @@ let salt = bcrypt.genSaltSync(10);
 const {
     insert,
     find,
-    update
+    update,remove
 
 } = require('../db/mongo');
 const {
@@ -18,14 +18,16 @@ Router.post('/reg', async (req, res) => {
     let {
         username,
         password,
-        quanxian
-    } = req.body;
+        quanxian,
+        zhanghao
+    } = req.body.params;
     password = bcrypt.hashSync(password, salt);
     try {
         insert('htuser', {
             username,
             password,
-            quanxian
+            quanxian,
+            zhanghao
         });
         res.send(formatData())
     } catch (err) {
@@ -38,12 +40,12 @@ Router.post('/reg', async (req, res) => {
 // 检查用户名是否存在
 Router.post('/check', async (req, res) => {
     let {
-        username
+        zhanghao
     } = req.body;
     let data
     try {
-        data = await find('user', {
-            username
+        data = await find('htuser', {
+            zhanghao
         });
         data = data[0];
         if (data) {
@@ -55,7 +57,7 @@ Router.post('/check', async (req, res) => {
         }
     } catch (err) {
         res.send(formatData({
-            code: 0
+          
         }))
     }
 })
@@ -65,25 +67,25 @@ Router.post('/check', async (req, res) => {
 //用户登录
 Router.post('/login', async (req, res) => {
     let {
-        username,
-        password
+        password,
+        zhanghao
     } = req.body;
     let data
     try {
-        data = await find('user', {
-            username
+        data = await find('htuser', {
+            zhanghao
         });
         //  console.log(data);
         data = data[0];
 
         // 生成token返回前端
-        let jpauthorization = token.create(username);
+        let jpauthorization = token.create(zhanghao);
         if (data) {
             if (bcrypt.compareSync(password, data[0].password)) {
                 res.send(formatData({
                     data: {
                         _id: data._id,
-                        username: data.username,
+                        zhanghao: data.zhanghao,
                         jpauthorization,
                         quanxian: data.quanxian
                     }
@@ -109,13 +111,14 @@ Router.post('/login', async (req, res) => {
 Router.post('/change', async (req, res) => {
     let {
         username,
+        zhanghao,
         quanxian,
         password
-    } = req.body;
+    } = req.body.params;
 
     try {
         if (quanxian) {
-            update('htuser', { "username": username }, {
+            update('htuser', { "zhanghao": zhanghao }, {
                 $set: {
                     quanxian: quanxian
                 }
@@ -124,11 +127,20 @@ Router.post('/change', async (req, res) => {
         }
 
         if (password) {
-            update('htuser', { "username": username }, {
+            password = bcrypt.hashSync(password, salt);
+            update('htuser', { "zhanghao": zhanghao }, {
                 $set: {
                     password: password
                 }
             })
+        }
+        if (username) {
+            update('htuser', { "zhanghao": zhanghao }, {
+                $set: {
+                    username:username
+                }
+            })
+
         }
 
         res.send(formatData())
@@ -139,5 +151,63 @@ Router.post('/change', async (req, res) => {
     }
 })
 
+Router.get('/', async (req, res) => {
+    let {username,zhanghao} = req.query;
+
+ 
+    let result = username || zhanghao
+  
+    if(result){
+        try {
+            if(username){
+           let data =await find('htuser',{"username":username},{})
+            res.send(formatData({data}))
+            }
+           if(zhanghao){
+                let data =await find('htuser',{"username":username},{})
+            res.send(formatData({data}))
+           }
+        } catch (err) {
+            res.send(formatData({
+                code: 0
+            }))
+        }
+
+    }else{
+        try {
+            let data =await find('htuser',{},{})
+            res.send(formatData(
+                {data}
+            ))
+      
+ 
+            
+        } catch (err) {
+            res.send(formatData({
+                code: 0
+            }))
+        }
+    }
+   
+})
+
+Router.delete('/:id', (req, res) => {
+    let {
+        id
+
+    } = req.params;
+
+    
+    try {
+        remove('htuser', {
+            _id: id
+        })
+        res.send(formatData())
+    } catch (err) {
+        res.send(formatData({
+            code: 0
+        }))
+    }
+})
 
 module.exports = Router;

@@ -5,7 +5,9 @@ let fenlei = axios.create({
     baseURL: 'http://localhost:3003/goods'
 })
 
-
+let user = axios.create({
+    baseURL: 'http://localhost:3003/htuser'
+})
 
 
 
@@ -36,10 +38,35 @@ async function addgood(url, params) {
 
     return data
 }
+async function getuser(url, params) {
+
+    let { data } = await user.get(url, { params })
+
+    return data
+}
+
+async function reguser(url, params) {
+
+    let { data } = await user.post(url, { params })
+
+    return data
+}
+
+async function removeuser(url, params) {
+
+    let { data } = await user.delete(url,{
+        params
+    })
+
+    return data
+}
 export default {
     getgood,
     patchgood,
     removegood,
-    addgood
+    addgood,
+    getuser,
+    reguser,
+    removeuser
   
 }

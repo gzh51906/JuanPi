@@ -35,19 +35,13 @@ class Listmodule extends React.Component {
                 })
 
               if(rus.code==1){
-                message.success(`商品添加成功`);
-              
+                message.success(`商品添加成功`);             
                 
-              }
-                
-              
+              }                             
               }
        }else{
          alert('请上传图片')
        }
-      
-        
-      
 
       } else {
 
@@ -72,29 +66,7 @@ class Listmodule extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    // let statedata = this.state.data;
-    // const props = {
-    //   name: 'file',
-
-    //   async customRequest(info) {
-
-    //     let mydata = new FormData();
-    //     mydata.set("goods", info.file)
-
-    //     let { data } = await axios.post('http://localhost:3003/tupian/goods', mydata)
-
-    //     if (data) {
-    //       message.success(`${info.file.name} file uploaded successfully`);
-    //       let { filename } = data[0];
-    //       console.log("55", this.state);
-
-    //     }
-
-    //   },
-
-
-    // };
-
+  
     return (
       <Form id="addfenlei" onSubmit={this.handleSubmit}>
         <Form.Item label="title" >
