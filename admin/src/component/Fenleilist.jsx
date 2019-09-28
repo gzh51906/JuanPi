@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Table, Divider, Tag, Button, Input, Dropdown, Menu, Row, Col, Icon } from 'antd';
 import api from '../api/index.jsx'
-import Listmodule from './Listmodule'
+
 import { log } from 'util';
 
 import '../css/fenlei.css'
@@ -34,7 +34,7 @@ class Fenleilist extends Component {
                         <>
 
                             <Button type="primary" size="small" onClick={this.changecon.bind(this, text)}>编辑</Button>
-                            <Button type="danger" size="small" onClick={this.removeItem.bind(this,text)}>删除</Button>
+                            <Button type="danger" size="small" onClick={this.removeItem.bind(this, text)}>删除</Button>
                         </>
                     ),
                 },
@@ -146,20 +146,20 @@ class Fenleilist extends Component {
 
 
         this.setState({
-            text,
+            text
         })
 
     }
-   async okcheck() {
-    //   console.log("text",this.state.text);
-    // api.getgood('/list')
-    let {key,title,middletitle,imgurl} = this.state.text
-    let res= await api.patchgood(`/listnav/${key}`,{title,middletitle,imgurl})
-    this.setState({
-        show: "none"
-    })
-    alert("修改成功")
-    
+    async okcheck() {
+        //   console.log("text",this.state.text);
+        // api.getgood('/list')
+        let { key, title, middletitle, imgurl } = this.state.text
+        let res = await api.patchgood(`/listnav/${key}`, { title, middletitle, imgurl })
+        this.setState({
+            show: "none"
+        })
+        alert("修改成功")
+
     }
 
     nocheck() {
@@ -168,35 +168,41 @@ class Fenleilist extends Component {
         })
     }
 
-onChangeValue(name,e){
-  let data = this.state.text;
-  data[name]=e.target.value;
-  this.setState({
-      text:data
-  })
+    onChangeValue(name, e) {
+        let data = this.state.text;
+        data[name] = e.target.value;
+        this.setState({
+            text: data
+        })
 
 
-    
-}
+
+    }
 
 
-removeItem(text){
-    console.log(text,{
-        id:text.key,
-        colname:"listgoods"
-    });
-    api.removegood('/listnav',{
-        id:text.key,
-        colname:"listgoods"
-    })
-    
-}
+    removeItem(text) {
+
+        api.removegood('/listnav', {
+            id: text.key,
+            colname: "listgoods"
+        })
+
+
+        let res = this.state.data.filter(item => {
+            return item.key != text.key
+        })
+        this.setState({
+            data: res
+        })
+        alert('删除成功')
+
+    }
     render() {
         let { columns, data, resmenu, select } = this.state
         const menu = (
             <Menu>
                 {
-                    
+
                     resmenu.map(item => {
                         return <Menu.Item key={item} onClick={this.onselect.bind(this, item)}>
                             {item}
@@ -240,15 +246,15 @@ removeItem(text){
                         //     </Form.Item>
                         //   ))}  
                         Object.keys(this.state.text).map((key) => {
-                            if(key==='key'){
+                            if (key === 'key') {
                                 return <label key={key}>
-                                {key}:
-                                <Input defaultValue={this.state.text[key]} disabled/>
-                            </label>
+                                    {key}:
+                                <Input defaultValue={this.state.text[key]} disabled />
+                                </label>
                             }
                             return <label key={key}>
                                 {key}:
-                                <Input defaultValue={this.state.text[key]} onChange={this.onChangeValue.bind(null,key)}/>
+                                <Input defaultValue={this.state.text[key]} onChange={this.onChangeValue.bind(null, key)} />
                             </label>
                         })
                     }

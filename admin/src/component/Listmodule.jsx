@@ -1,41 +1,99 @@
 import React from 'react'
-import { Form, Input, Icon, Button,Upload, message } from 'antd'
+import { Form, Input, Icon, Button, Upload, message } from 'antd'
+import axios from "axios"
+import Api from '../api'
+
+
 class Listmodule extends React.Component {
   constructor() {
     super();
+    this.state = {
+
+    }
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.toupload = this.toupload.bind(this)
   }
   handleSubmit(e) {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields( async (err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
-        let { title, middle, imgurl } = values;
+       if(this.refs.loadurl.files[0]){
+        let { title, middletitle } = values;
+       
+        let mydata = new FormData();
+        mydata.set("goods", this.refs.loadurl.files[0])
+        let { data } = await axios.post('http://localhost:3003/tupian/goods', mydata)
+        if (data) {              
+                let { filename } = data[0];
+            this.setState({
+              imgurl:filename
+            })
+                let rus= await Api.addgood('/listnav',{
+                  title,
+                  middletitle,
+                  imgurl:filename
+                })
+
+              if(rus.code==1){
+                message.success(`商品添加成功`);
+              
+                
+              }
+                
+              
+              }
+       }else{
+         alert('请上传图片')
+       }
+      
+        
+      
+
+      } else {
+
 
       }
     });
   };
-
+  async toupload(){
+    let mydata = new FormData();
+        mydata.set("goods", this.refs.loadurl.files[0])
+     
+        let { data } = await axios.post('http://localhost:3003/tupian/goods', mydata)
+        if (data) {
+                message.success(`上传成功`);
+                let { filename } = data[0];
+                this.setState({
+                  imgurl:filename
+                })
+  
+              }
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const props = {
-      name: 'file',
-      action:"http://localhost:3003/upload/goods",
-      // action:"https://www.mocky.io/v2/5cc8019d300000980a055e76",
-      onChange(info) {
-       
-        if (info.file.status !== 'uploading') {
-          console.log("jj",info.file, "jp",info.fileList);
-          
-        }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
-    };
+    // let statedata = this.state.data;
+    // const props = {
+    //   name: 'file',
+
+    //   async customRequest(info) {
+
+    //     let mydata = new FormData();
+    //     mydata.set("goods", info.file)
+
+    //     let { data } = await axios.post('http://localhost:3003/tupian/goods', mydata)
+
+    //     if (data) {
+    //       message.success(`${info.file.name} file uploaded successfully`);
+    //       let { filename } = data[0];
+    //       console.log("55", this.state);
+
+    //     }
+
+    //   },
+
+
+    // };
 
     return (
       <Form id="addfenlei" onSubmit={this.handleSubmit}>
@@ -58,21 +116,14 @@ class Listmodule extends React.Component {
             />,
           )}
         </Form.Item>
-        {/* <Form.Item label="imgurl" > */}
-         <div>img:
-         <Upload {...props}>
-              <Button>
-                <Icon type="upload" /> Click to Upload
-                 </Button>
-            </Upload>
-         </div>
-            
-          
-        {/* </Form.Item> */}
-
+        <Form.Item label="imgurl" >
+         
+            <input type="file" ref="loadurl"/>
+         
+        </Form.Item>
 
         <Button type="primary" htmlType="submit" className="login-form-button">
-          Log in
+          添加
           </Button>
       </Form>
     )

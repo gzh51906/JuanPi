@@ -6,6 +6,9 @@ let fenlei = axios.create({
 })
 
 
+
+
+
 async function getgood(url, params) {
 
     let { data } = await fenlei.get(url, { params })
@@ -27,9 +30,16 @@ async function removegood(url, params) {
     return data
 }
 
+async function addgood(url, params) {
 
+    let { data } = await fenlei.post(url, { params })
+
+    return data
+}
 export default {
     getgood,
     patchgood,
-    removegood
+    removegood,
+    addgood
+  
 }

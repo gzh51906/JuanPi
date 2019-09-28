@@ -4,7 +4,9 @@ const Router = express.Router()
 const GoodsRouter = require('./goods')
 const MycartRouter = require('./mycart')
 const UserRouter = require('./user')
-const uploadRouter = require('./upload');
+
+const uploadRouter = require('./uploads');
+
 const htuserRouter = require('./htuser');
 // 利用中间bodyParse格式化请求参数
 Router.use(express.json(), express.urlencoded({
@@ -30,7 +32,8 @@ Router.use('/cart', MycartRouter);
 Router.use('/user', UserRouter);
 Router.use('/htuser', htuserRouter);
 //文件上传
-Router.use('/upload', uploadRouter)
+Router.use('/tupian', uploadRouter);
+
 Router.get('/verify', (req, res) => {
     // 获取前端传入的token
     // 对token进行校验
