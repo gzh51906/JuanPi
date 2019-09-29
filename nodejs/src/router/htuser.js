@@ -1,7 +1,8 @@
 const express = require('express');
 const Router = express.Router();
 const bcrypt = require('bcryptjs');
-let salt = bcrypt.genSaltSync(10);
+// let salt = bcrypt.genSaltSync(10);
+
 const {
     insert,
     find,
@@ -21,7 +22,7 @@ Router.post('/reg', async (req, res) => {
         quanxian,
         zhanghao
     } = req.body.params;
-    password = bcrypt.hashSync(password, salt);
+    password = bcrypt.hashSync(password, 10);
     try {
         insert('htuser', {
             username,
@@ -69,7 +70,9 @@ Router.post('/login', async (req, res) => {
     let {
         password,
         zhanghao
-    } = req.body;
+    } = req.body.params;
+
+       
     let data
     try {
         data = await find('htuser', {
@@ -77,19 +80,27 @@ Router.post('/login', async (req, res) => {
         });
         //  console.log(data);
         data = data[0];
-
+    
         // 生成token返回前端
         let jpauthorization = token.create(zhanghao);
         if (data) {
-            if (bcrypt.compareSync(password, data[0].password)) {
+         console.log('data',data);
+         
+            if (bcrypt.compareSync(password, data.password)) {
                 res.send(formatData({
                     data: {
                         _id: data._id,
                         zhanghao: data.zhanghao,
+                        username:data.username,
                         jpauthorization,
                         quanxian: data.quanxian
                     }
                 }))
+            // if(data){
+            //     bcrypt.compare("B4c0/\/", hash, function(err, res) {
+            //         // res === true
+            //     });
+            
             } else {
                 res.send(formatData({
                     code: 0

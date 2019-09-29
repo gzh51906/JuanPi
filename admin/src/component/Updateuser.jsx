@@ -141,7 +141,7 @@ class Updateuser extends Component {
         let qxreg = /^(初级|中级|高级)$/
         let result1 = qxreg.test(quanxian)
 
-        let resreg = /[0-9]{6,9}/;
+        let resreg = /^[0-9]{6,9}$/;
         let result3 = resreg.test(Number(this.state.pass))
               //如果为空，不修改
         if(this.state.pass){

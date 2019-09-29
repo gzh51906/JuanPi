@@ -6,7 +6,6 @@ import regReducer from './reg'
 
 // const store = createStore(rootReducer,composeWithDevTools(enhancer));
 let rootReducer= combineReducers({
-
     common:commonReducer,
     reg:regReducer
 });

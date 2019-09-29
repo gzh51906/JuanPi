@@ -13,7 +13,7 @@ import Fenleilist from '../component/Fenleilist'
 import Shoppinglist from '../component/Shoppinglist'
 import updateuser from '../component/updateuser'
 import Updateuser from '../component/updateuser';
-
+import axios from 'axios'
 
 
 
@@ -22,69 +22,8 @@ class Home extends Component {
         super()
         this.state = {
             collapsed: false,
-            menu: [
-                {
-                    title: '分类管理',
-                    icon: "mail",
-                    sco: [
-
-                        {
-                            name: '分类列表',
-                            path: '/fenleilist'
-                        }, {
-                            name: '添加分类',
-                            path: '/addfenlei'
-                        },
-
-
-                    ],
-                    disabled: false
-                },
-                {
-                    title: '商品管理',
-                    icon: "shop",
-                    sco: [
-                        {
-                            name:   '商品列表',
-                            path: '/shoppinglist'
-                        }, {
-                            name:  '添加商品',
-                            path: '/addshopping'
-                        }
-
-                      
-                       
-                    ],
-                    disabled: false
-                },
-                {
-                    title: '订单管理',
-                    icon: "file-done",
-                    sco: [
-                        {
-                            name:   '待处理订单',
-                            path: '/dingdan'
-                        }
-                      
-                    ],
-                    disabled: false
-                },
-                {
-                    title: '用户管理',
-                    icon: "user",
-                    sco: [
-                        {
-                            name:  '添加用户',
-                            path: '/adduser'
-                        }, {
-                            name:  '修改用户信息',
-                            path: '/updateuser'
-                        }                    
-                        
-                    ],
-                    disabled: false
-                }
-            ]
+            quanxian: '',
+            menu: []
         };
 
         this.onCollapse = this.onCollapse.bind(this)
@@ -93,17 +32,211 @@ class Home extends Component {
 
 
     onCollapse(collapsed) {
-        console.log(collapsed);
         this.setState({ collapsed });
     };
-    componentDidMount() {
+    async componentDidMount() {
+
+        let token = localStorage.getItem('htAuthorization')
+        let quanxian = localStorage.getItem('htquanxian')
+
+        // token验证
+        let { data: { data } } = await axios.get('http://localhost:3003/verify', {
+            headers: { Authorization: token }
+        })
+
+        if (data.authorization) {
+
+        } else {
+            this.props.history.push('/')
+        }
+
+        //   权限
+        console.log('quanxian',quanxian,quanxian==="初级");
+
+        let menu;
+        if (quanxian == "初级") {
+            menu = [
+                {
+                    title: '分类管理',
+                    icon: "mail",
+                    sco: [
+                        {
+                            name: '分类列表',
+                            path: '/fenleilist'
+                        }, {
+                            name: '添加分类',
+                            path: '/addfenlei'
+                        },
+                    ],
+                    disabled: false
+                },
+                {
+                    title: '商品管理',
+                    icon: "shop",
+                    sco: [
+                        {
+                            name: '商品列表',
+                            path: '/shoppinglist'
+                        }, {
+                            name: '添加商品',
+                            path: '/addshopping'
+                        }
+                    ],
+                    disabled: false
+                },
+                {
+                    title: '订单管理',
+                    icon: "file-done",
+                    sco: [
+                        {
+                            name: '待处理订单',
+                            path: '/dingdan'
+                        }
+                    ],
+                    disabled: false
+                },
+                {
+                    title: '用户管理',
+                    icon: "user",
+                    sco: [
+                        {
+                            name: '添加用户',
+                            path: '/adduser'
+                        }, {
+                            name: '修改用户信息',
+                            path: '/updateuser'
+                        }
+
+                    ],
+                    disabled: true
+                }
+            ]
+        }
+        if (quanxian = "中级") {
+            menu = [{
+                title: '分类管理',
+                icon: "mail",
+                sco: [
+                    {
+                        name: '分类列表',
+                        path: '/fenleilist'
+                    }, {
+                        name: '添加分类',
+                        path: '/addfenlei'
+                    },
+                ],
+                disabled: false
+            },
+            {
+                title: '商品管理',
+                icon: "shop",
+                sco: [
+                    {
+                        name: '商品列表',
+                        path: '/shoppinglist'
+                    }, {
+                        name: '添加商品',
+                        path: '/addshopping'
+                    }
+                ],
+                disabled: false
+            },
+            {
+                title: '订单管理',
+                icon: "file-done",
+                sco: [
+                    {
+                        name: '待处理订单',
+                        path: '/dingdan'
+                    }
+                ],
+                disabled: false
+            },
+            {
+                title: '用户管理',
+                icon: "user",
+                sco: [
+                    {
+                        name: '添加用户',
+                        path: '/adduser'
+                    }, {
+                        name: '修改用户信息',
+                        path: '/updateuser'
+                    }
+
+                ],
+                disabled: false
+            }]
+
+        }
+        if (quanxian = "高级") {
+           menu=[
+            {
+                title: '分类管理',
+                icon: "mail",
+                sco: [
+                    {
+                        name: '分类列表',
+                        path: '/fenleilist'
+                    }, {
+                        name: '添加分类',
+                        path: '/addfenlei'
+                    },
+                ],
+                disabled: false
+            },
+            {
+                title: '商品管理',
+                icon: "shop",
+                sco: [
+                    {
+                        name:   '商品列表',
+                        path: '/shoppinglist'
+                    }, {
+                        name:  '添加商品',
+                        path: '/addshopping'
+                    }                    
+                ],
+                disabled: false
+            },
+            {
+                title: '订单管理',
+                icon: "file-done",
+                sco: [
+                    {
+                        name:   '待处理订单',
+                        path: '/dingdan'
+                    }                     
+                ],
+                disabled: false
+            },
+            {
+                title: '用户管理',
+                icon: "user",
+                sco: [
+                    {
+                        name:  '添加用户',
+                        path: '/adduser'
+                    }, {
+                        name:  '修改用户信息',
+                        path: '/updateuser'
+                    }                    
+                    
+                ],
+                disabled: false
+            }
+           ]
+        }
+
+        this.setState({
+            menu
+        })
 
     }
 
-    menuClick({ keyPath,key,item}) {
+    menuClick({ keyPath, key, item }) {
         let { path } = this.props.match
-        console.log("w", path+key);
-        this.props.history.push(path+key)
+        this.props.history.push(path + key)
 
     }
 
@@ -129,6 +262,8 @@ class Home extends Component {
 
 
                                         if (item.sco) {
+                                            console.log(item);
+                                            
                                             return (<SubMenu
                                                 disabled={item.disabled}
                                                 key={item.title}
@@ -150,10 +285,13 @@ class Home extends Component {
                                             </SubMenu>)
 
                                         } else {
-                                            return (<Menu.Item key={item.title} disabled={item.disabled}>
-                                                <Icon type={item.icon} />
-                                                <span>{item.title}</span>
-                                            </Menu.Item>)
+                                            return (
+                                                <Menu.Item key={item.title} disabled={item.disabled}>
+                                                    <Icon type={item.icon} />
+                                                    <span>{item.title}</span>
+                                                </Menu.Item>
+
+                                            )
                                         }
 
                                     })
@@ -164,13 +302,13 @@ class Home extends Component {
                         </Sider>
                         <Content>
                             <Switch>
-                                <Route path={path + '/adduser'}  component={Adduser}></Route>
-                                <Route path={path + '/addfenlei'}  component={Addfenlei}></Route>
-                                <Route path={path + '/addshopping'}  component={Addshopping}></Route>
-                                <Route path={path + '/dingdan'}  component={Dingdan}></Route>
-                                <Route path={path + '/fenleilist'}  component={Fenleilist}></Route>
-                                <Route path={path + '/shoppinglist'}  component={Shoppinglist}></Route>
-                                <Route path={path + '/updateuser'}  component={Updateuser}></Route>
+                                <Route path={path + '/adduser'} component={Adduser}></Route>
+                                <Route path={path + '/addfenlei'} component={Addfenlei}></Route>
+                                <Route path={path + '/addshopping'} component={Addshopping}></Route>
+                                <Route path={path + '/dingdan'} component={Dingdan}></Route>
+                                <Route path={path + '/fenleilist'} component={Fenleilist}></Route>
+                                <Route path={path + '/shoppinglist'} component={Shoppinglist}></Route>
+                                <Route path={path + '/updateuser'} component={Updateuser}></Route>
                             </Switch>
                         </Content>
                     </Layout>

@@ -12,12 +12,7 @@ class App extends Component{
                 <Switch>
                     <Route path='/home' component={Home}></Route>
                     {/* 登陆页面 */}
-                    <Route path='/' component={Login}></Route>
-                
-                    <Route></Route>
-                    <Route></Route>
-                    <Route></Route>
-
+                    <Route path='/' component={Login}></Route>              
                 </Switch>
             </div>
         )

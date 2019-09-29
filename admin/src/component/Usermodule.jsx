@@ -4,6 +4,7 @@ import axios from "axios"
 import Api from '../api'
 import { connect } from 'react-redux';
 
+
 class Usermodule extends React.Component {
   constructor() {
     super();
@@ -30,7 +31,7 @@ class Usermodule extends React.Component {
         //检查账号是否存在 成功就没有
         if(vall){
           let checkuser =await Api.reguser('/check',{zhanghao:this.state.ryvalue}) 
-           console.log('xx',checkuser);
+ 
            if(checkuser.msg=="success"){
             let adduser =await Api.reguser('/reg',{
               zhanghao:this.state.ryvalue,
@@ -96,7 +97,7 @@ class Usermodule extends React.Component {
           </Form.Item>
           <Form.Item label="密码" >
             {getFieldDecorator('password', {
-              rules: [{ required: true, message: '密码为6-9个数字!', pattern: /[0-9]{6,9}/ }],
+              rules: [{ required: true, message: '密码为6-9个数字!', pattern: /^[0-9]{6,9}$/ }],
             })(
               <Input
                 placeholder="密码"

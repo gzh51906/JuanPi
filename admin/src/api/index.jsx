@@ -60,6 +60,8 @@ async function removeuser(url, params) {
 
     return data
 }
+
+
 export default {
     getgood,
     patchgood,

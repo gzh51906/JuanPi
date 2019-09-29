@@ -6,7 +6,10 @@ const MycartRouter = require('./mycart')
 const UserRouter = require('./user')
 
 const uploadRouter = require('./uploads');
-
+const {
+    token,
+    formatData
+} = require('../utils');
 const htuserRouter = require('./htuser');
 // 利用中间bodyParse格式化请求参数
 Router.use(express.json(), express.urlencoded({
@@ -38,6 +41,7 @@ Router.get('/verify', (req, res) => {
     // 获取前端传入的token
     // 对token进行校验
     let authorization = req.header('Authorization');
+console.log('ssss',authorization);
 
     let result = token.verify(authorization);
     if (result) {
