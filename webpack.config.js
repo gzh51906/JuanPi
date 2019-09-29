@@ -21,7 +21,8 @@ module.exports = {
         alias: {
             '@': path.resolve(__dirname, './src'),
             '@@': path.resolve(__dirname, './src/components'),
-            '~': path.resolve(__dirname, './src/pages')
+            '~': path.resolve(__dirname, './src/pages'),
+          
         },
         extensions: ['.js', '.jsx']
     },
@@ -72,6 +73,10 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: ['style-loader', 'css-loader', 'sass-loader']
+            },
+            {
+                test:/\.(png|jpg|gif)$/i,
+                use:[{loader:'url-loader'}]
             }
         ]
     },
