@@ -9,7 +9,7 @@ import Home from './pages/home';
 import Reg from './pages/reg';
 import Login from './pages/login';
 import Mine from './pages/mine';
-import Goods from './pages/goods';
+import Goods from '~/goods';
 import Cart from './pages/cart';
 import List from './pages/list';
 import SearchPage from './pages/home/components/searchPage'
@@ -19,6 +19,7 @@ import Cate from '~/cate'
 
 
 import './App.css';
+import { log } from '../node_modules/util';
 class App extends Component{
     state = {
         current: 'home',
@@ -28,8 +29,8 @@ class App extends Component{
         title: '首页',
         icon: 'bank'
     }, {
-        name: 'list',
-        path: '/list',
+        name: 'cate',
+        path: '/cate',
         title: '分类',
         icon: 'table'
     }, {
@@ -46,39 +47,48 @@ class App extends Component{
     }
   
                 render() {
+                
                 return (
                 <div>
-                <div style={{position: 'fixed', bottom: 0, width: '100%', zIndex: 2}}>
-                <TabBar
-                unselectedTintColor = "#000"
-                tintColor = "red"
-                barTintColor="#fff"
-                tabBarPosition="bottom"
-                >
-                {
-                    this.state.menu.map(item => {
+                     { (this.props.location.pathname).indexOf('list') != -1 ?
+               ''
+                : (this.props.location.pathname.indexOf('goods')!=-1?
+            ''
+            :<div style={{position: 'fixed', bottom: 0, width: '100%', zIndex: 2}}>
+            <TabBar
+            unselectedTintColor = "#000"
+            tintColor = "red"
+            barTintColor="#fff"
+            tabBarPosition="bottom"
+            >
+            {
+                this.state.menu.map(item => {
+   
                         return <TabBar.Item
-                            key={item.path}
-                            title={item.title}
-                            icon={<Icon type={item.icon}/>}
-                            onPress={() => {
-                                this.props.history.push(item.path);
-                                this.setState({current: item.name})
-                            }}
-                            selectedIcon={
-                                <Icon type={item.icon} style={{color: 'red'}}/>
-                            }
-                            selected={
-                                this.state.current === item.name
-                            }
+                        key={item.path}
+                        title={item.title}
+                        icon={<Icon type={item.icon}/>}
+                        onPress={() => {
+                            this.props.history.push(item.path);
+                            this.setState({current: item.name})
+                        }}
+                        selectedIcon={
+                            <Icon type={item.icon} style={{color: 'red'}}/>
+                        }
+                        selected={
+                            this.state.current === item.name
+                        }
 
 
-                        />
-                    })
-                }
-                </TabBar>
-                </div>
-
+                    />
+                
+                   
+                })
+            }
+            </TabBar>
+            </div>
+            )
+}
                 <div>
                 <Switch>
                 <Route path='/cate' component={Cate}></Route> 
@@ -86,9 +96,9 @@ class App extends Component{
                 <Route path='/reg' component={Reg}/>
                 <Route path='/login' component={Login}/>
                 <Route path='/cart' component={Cart}/>
-                <Route path='/goods/:id' component={Goods}/>
+                <Route path='/goods/:classify/:id' component={Goods}/>
                 <Route path='/mine' component={Mine} />
-                <Route path='/list' component={List} />
+                <Route path='/list/:classify/:id' component={List} />
                 <Route path='/searchPage' component={SearchPage} />
                 <Route path="/notfound" render={() => <div>404</div>} />
                 <Redirect from='/' to='/home' exact/>

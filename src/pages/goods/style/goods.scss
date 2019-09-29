@@ -1,0 +1,72 @@
+.am-wingblank.am-wingblank-lg {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.am-wingblank {
+    margin-left: 0px;
+    margin-right: 0px;
+
+
+}
+
+.log span {
+    padding: 0px 15px;
+    margin-left: 5px;
+
+}
+
+.log span::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background: pink;
+
+
+}
+
+.pic {
+    height:50px;
+    position: relative;
+    margin-bottom: 10px;
+    img {
+        height: 110px;
+        position: absolute;
+        left: 0;
+        top: -60px;
+    }
+
+}
+
+.gutter-box {
+    height: 33px;
+    text-align: center;
+    line-height: 33px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    width: 100%;
+}
+.size {
+    margin-bottom: 20px;
+    .gutter-box {
+        font-weight: 600;
+    }
+}
+.am-stepper-handler {
+     border-radius: 0px;
+    color: red;
+    width: 31px;
+  
+}
+
+.num {
+    margin-bottom: 10px;
+}
+
+.home{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid #ccc;
+}
