@@ -72,8 +72,7 @@ Router.post('/add', async (req, res) => {
             colname = 'tongxlygoods';
             break;
         default:
-            colname = 'goods';
-            break;
+            colname = 'goods'
 
 
     }
@@ -100,26 +99,7 @@ Router.post('/add', async (req, res) => {
     }
 })
 
-// 列表页导航
-Router.delete('/listnav', (req, res) => {
 
-    let {
-        colname,
-        id
-
-    } = req.query;
-
-    try {
-        remove(colname, {
-            _id: id
-        })
-        res.send(formatData())
-    } catch (err) {
-        res.send(formatData({
-            code: 0
-        }))
-    }
-})
 
 // 后台删除商品
 Router.delete('/:id', (req, res) => {
@@ -203,8 +183,7 @@ Router.patch('/:id', (req, res) => {
         name, //名字
         status_txt, // "部分缺货"
         imgurl,
-    } = req.body.params;
- 
+    } = req.body;
     let colname
     switch (title) {
         case '女装':
@@ -361,11 +340,10 @@ Router.get('/list', async (req, res) => {
         sort,
         asc,
         title,
-        middletitle
+        middletitle,
 
     } = req.query;
 
-console.log('mm',req.query);
 
     let colname
     switch (title) {
@@ -416,46 +394,19 @@ console.log('mm',req.query);
 
     }
 
-    try{
-       if(middletitle){
 
-        let data = await find(colname, { "middletitle": middletitle }, {
-            skip,
-            limit,
-            sort,
-            asc
-        });
-     
-        
-        res.send(formatData({
-           data
-         }))
-       }else{
-           
-        let data = await find(colname, { }, {
-            skip,
-            limit,
-            sort,
-            asc
-        });
-     
-        
-        res.send(formatData({
-           data
-         }))
-       }
-        
+    let data = await find(colname, {
+        "middletitle": middletitle
+    }, {
+        skip,
+        limit,
+        sort,
+        asc
+    });
 
-
-    }catch(err){
-        res.send(formatData({
-           code:0
-        }))
-    }
-
-    
-
-  
+    res.send(formatData({
+        data
+    }))
 })
 
 
@@ -600,110 +551,17 @@ Router.get('/like', async (req, res) => {
         return [...list1, ...list2, ...list3, ...list4, ...list5, ...list6, ...list7, ...list8, ...list9, ...list10, ...list11]
     }
 
+    let data = await SelectAll()
 
-    try{
-        let data = await SelectAll()
-        res.send(formatData({
-            data
-        }))
-    }catch(err){
-        res.send(formatData({
-           code:0
-        }))
-    }
-  
-
-    
+    res.send(formatData({
+        data
+    }))
 
 
 })
 
 // 列表页导航
 Router.get('/listnav', async (req, res) => {
-
-    let data = await find('listgoods', {}, {})
-    res.send(formatData({
-        data
-    }))
-})
-
-// 列表页添加
-Router.post('/listnav', async (req, res) => {
-let {title,middletitle,imgurl} = req.body.params
-
-console.log('res',req.body);
-
-    try {
-        insert("listgoods", {
-            title,         //大分类
-            middletitle,    // 中分类
-            imgurl
-
-        })
-        res.send(formatData())
-    }catch(err){
-        res.send(formatData({
-            code: 0
-        }))
-    }
-
-})
-
-// 列表页修改
-Router.patch('/listnav/:id', async (req, res) => {
-    let {
-        id
-    } = req.params;
-    ;
-
-    let {
-        title,
-        middletitle,
-        imgurl
-    } = req.body.params
-
-    try {
-        if (title) {
-            update("listgoods", {
-                _id: id
-            }, {
-                    $set: {
-                        title: title
-                    }
-                })
-        }
-
-        if (middletitle) {
-            update("listgoods", {
-                _id: id
-            }, {
-                    $set: {
-                        middletitle: middletitle
-                    }
-                })
-        }
-        if (imgurl) {
-            update("listgoods", {
-                _id: id
-            }, {
-                    $set: {
-                        imgurl: imgurl
-                    }
-                })
-        }
-
-
-        res.send(formatData())
-
-    } catch (err) {
-
-        res.send(formatData({
-            code: 0
-        }))
-    }
-
-
-
     let data = await find('listgoods', {}, {})
     res.send(formatData({
         data
@@ -779,20 +637,13 @@ Router.get('/:id', async (req, res) => {
 
     }
 
-    try{
-        let data = await find(colname, {
-            _id: id
-        });
-    
-        res.send(formatData({
-            data
-        }))
-    }catch(err){
-        res.send(formatData({
-           code:0
-        }))
-    }
-   
+    let data = await find(colname, {
+        _id: id
+    });
+
+    res.send(formatData({
+        data
+    }))
 })
 
 
