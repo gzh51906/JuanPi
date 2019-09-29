@@ -22,7 +22,7 @@ class Cate extends Component{
     
    async componentDidMount(){
             let {data:tabs} = await Api.getTabs();
-           // console.log(tabs);
+            console.log(tabs);
             
             this.setState({tabs})
             
@@ -41,6 +41,7 @@ class Cate extends Component{
     }
     render() {      
           let {tabs,tabPosition} = this.state
+       console.log(tabs);
        
         return (
             
