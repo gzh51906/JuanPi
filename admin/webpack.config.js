@@ -14,7 +14,8 @@ module.exports = {
 
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, './src')
+            '@': path.resolve(__dirname, './src'),
+            '~~': path.resolve(__dirname, './src/public/img')
         },
         extensions:['.js','.jsx']
     },
@@ -42,6 +43,14 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
+            },
+            {
+                test:/\.(png|jpg|gif)$/i,
+                use:[
+                  {
+                    loader: 'url-loader'
+                  }
+                ]
             }
         ]
     },

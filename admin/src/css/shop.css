@@ -1,0 +1,15 @@
+.ant-table-fixed {
+    table-layout: fixed;
+  }
+
+  .ant-table-tbody > tr > td {
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+  .spin{
+      position: absolute;
+      margin-left:200px;
+      margin-top: 200px;
+   
+
+  }

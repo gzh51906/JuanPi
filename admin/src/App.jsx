@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter ,Route, Switch} from 'react-router-dom';
 import Home from '@/pages/Home'
-import Content from '@/pages/Content'
+import Login from '@/pages/Login'
 import '@/css/index.css'
 
 
@@ -10,9 +10,9 @@ class App extends Component{
         return (
             <div style={{width:"100%",height:"100%"}}>
                 <Switch>
-                    <Route path='/content' component={Content}></Route>
+                    <Route path='/home' component={Home}></Route>
                     {/* 登陆页面 */}
-                    <Route path='/' component={Home}></Route>
+                    <Route path='/' component={Login}></Route>
                 
                     <Route></Route>
                     <Route></Route>

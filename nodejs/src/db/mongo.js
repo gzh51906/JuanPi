@@ -92,11 +92,13 @@ exports.find = async (colName, query = {}, {
     limit,
     asc
 } = {}) => {
+
     let {
         db,
         client
     } = await connect();
     let collection = db.collection(colName);
+// console.log('query',query,colName);
 
     //对传进来的id进行添加前缀ObjectId（）
     if (query._id) {
