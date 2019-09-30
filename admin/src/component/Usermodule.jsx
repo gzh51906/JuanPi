@@ -26,7 +26,7 @@ class Usermodule extends React.Component {
         let regx =/^[0-9]{12}$/;
  
         let vall = regx.test(Number(this.state.ryvalue));
-        console.log('vay', vall,values);
+   
         
         //检查账号是否存在 成功就没有
         if(vall){

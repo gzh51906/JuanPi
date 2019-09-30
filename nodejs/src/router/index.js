@@ -41,7 +41,6 @@ Router.get('/verify', (req, res) => {
     // 获取前端传入的token
     // 对token进行校验
     let authorization = req.header('Authorization');
-console.log('ssss',authorization);
 
     let result = token.verify(authorization);
     if (result) {

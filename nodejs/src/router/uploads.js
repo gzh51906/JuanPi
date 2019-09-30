@@ -41,8 +41,7 @@ const {
 
 // 上传商品图片a
 Router.use('/goods', upload.array('goods', 6), (req, res) => {
-    console.log(999);
-    console.log('req', req.files);
+
     // upload.array()会对上传的图片进行处理，并设置到req.files中
     // res.send('111')
     res.send(req.files)

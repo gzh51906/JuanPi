@@ -28,17 +28,12 @@ class Loginmodule extends React.Component {
                 if(loginres.msg=='success'){
              
                     //如果正确，跳转home
-                    gotologin(loginres.data.jpauthorization,loginres.data.quanxian,loginres.data.username)
-                     this.props.history.push('/home')
-               
-                    
-                 
+                    gotologin(loginres.data.jpauthorization,loginres.data._id)
+                     this.props.history.push('/home')              
                 }else{
                     alert('用户名或密码错误')
                 }
-
-                
-                
+              
             }
         });
     }
@@ -82,8 +77,8 @@ let mapStateToProps = function (state) {
 
 let mapDispatchToProps = function (dispatch) {
     return {
-     gotologin(authorization,quanxian,username){
-        dispatch({type:"login",authorization,quanxian,username})
+     gotologin(authorization,id){
+        dispatch({type:"login",authorization,id})
       }
     
     }

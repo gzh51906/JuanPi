@@ -84,7 +84,7 @@ Router.post('/login', async (req, res) => {
         // 生成token返回前端
         let jpauthorization = token.create(zhanghao);
         if (data) {
-         console.log('data',data);
+        //  console.log('data',data);
          
             if (bcrypt.compareSync(password, data.password)) {
                 res.send(formatData({
@@ -162,6 +162,28 @@ Router.post('/change', async (req, res) => {
     }
 })
 
+
+Router.get('/havetoken', async (req, res) => {
+    let {id} = req.query;
+  
+        try {
+
+           let data =await find('htuser',{"_id":id},{})
+           data = data[0];
+            res.send(formatData({data}))
+  
+        } catch (err) {
+            res.send(formatData({
+                code: 0
+            }))
+        
+        }
+
+    
+   
+})
+
+
 Router.get('/', async (req, res) => {
     let {username,zhanghao} = req.query;
 
@@ -189,10 +211,7 @@ Router.get('/', async (req, res) => {
             let data =await find('htuser',{},{})
             res.send(formatData(
                 {data}
-            ))
-      
- 
-            
+            ))              
         } catch (err) {
             res.send(formatData({
                 code: 0
@@ -220,5 +239,10 @@ Router.delete('/:id', (req, res) => {
         }))
     }
 })
+
+
+
+
+
 
 module.exports = Router;

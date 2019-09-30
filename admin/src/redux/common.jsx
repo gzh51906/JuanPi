@@ -1,8 +1,8 @@
 let initState = {
     userInfo:null,
     htAuthorization:'',
-    quanxian:'',
-    username:''
+    htid:''
+
 }
 
 function reducer(state=initState,action){
@@ -10,24 +10,21 @@ function reducer(state=initState,action){
         // {type:'login',userInfo,token}
         case 'login':
         localStorage.setItem('htAuthorization',action.authorization)
-        localStorage.setItem('htquanxian',action.quanxian)
-        localStorage.setItem('htusername',action.username);
+        localStorage.setItem('htid',action.id)
      
             return {
                 ...state,
-                quanxian:action.quanxian,
                 htAuthorization:action.authorization,
-                username:action.username
+                htid:action.id
             }
         case 'logout':
         localStorage.removeItem('htAuthorization');
-        localStorage.removeItem('htquanxian');
-        localStorage.removeItem('htusername');
+        localStorage.removeItem('htid');
             return {
                 ...state,
-                quanxian:null,
                 htAuthorization:'',
-                username:''
+                htid:''
+
             }
      
         default:

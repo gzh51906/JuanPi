@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react'
-import { Table, Divider, Tag, Button, Input, Dropdown, Row, Col, Icon } from 'antd';
+import { Table,  Button, Input,  Row, Col, Icon } from 'antd';
 import api from '../api/index.jsx'
 import '../css/fenlei.css'
 
@@ -63,7 +63,7 @@ class Updateuser extends Component {
         this.modelfunction = this.modelfunction.bind(this)
         this.onChangepass = this.onChangepass.bind(this)
     }
-    async componentDidMount() {
+    async componentWillMount() {
 
         let { data } = await api.getuser('', {})
         let res = []
@@ -86,6 +86,16 @@ class Updateuser extends Component {
 
 
     }
+
+    
+componentWillUnMount () {
+    this.setState = (state, callback) => {
+        return
+      }
+
+
+}
+
     modelfunction(data) {
         let res = []
         data.forEach(element => {
@@ -131,7 +141,6 @@ class Updateuser extends Component {
            pass:e.target.value
        })
 
-       console.log(e.target.value);
         
     }
 
@@ -153,6 +162,7 @@ class Updateuser extends Component {
                          password,
                          quanxian                    
                      })
+                     
                      alert('修改成功')
                      this.setState({
                         show: "none"
@@ -166,16 +176,19 @@ class Updateuser extends Component {
         }else{
             if(result1){
                 //验证成功修改数据
-                  let xiugai = await api.reguser('/change', {
+                  let xiugai1 = await api.reguser('/change', {
                       zhanghao,                 
                       quanxian                    
                   })
-                  console.log('my');
+                
                   
-                  alert('修改成功')
-                  this.setState({
-                    show: "none"
-                })
+                  if(xiugai1.msg==='success'){   
+                    alert('修改成功')
+                    this.setState({
+                      show: "none"
+                  })
+                  }
+              
                 
              }else{
               alert(`权限只有初级中级高级!`)

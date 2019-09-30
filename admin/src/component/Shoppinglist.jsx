@@ -1,6 +1,6 @@
-import  React,{Component} from 'react'
+import React, { Component } from 'react'
 
-import { Table, Divider, Tag, Button, Input, Dropdown, Menu, Row, Col, Icon,Spin } from 'antd';
+import { Table, Divider, Tag, Button, Input, Dropdown, Menu, Row, Col, Icon, Spin } from 'antd';
 import api from '../api/index.jsx'
 
 
@@ -15,21 +15,21 @@ class Shopping extends Component {
                     title: 'title',
                     dataIndex: 'title',
                     key: 'title',
-                    fixed:'left',
+                    fixed: 'left',
                     width: "80px",
-                    render: text => <a>{text}</a>,
+                    render: text => <a>{text}</a>
                 },
                 {
                     title: 'middletitle',
                     dataIndex: 'middletitle',
                     key: 'middletitle',
-                    fixed:'left',
+                    fixed: 'left',
                     width: "100px",
-                },{
+                }, {
                     title: '商品名',
                     dataIndex: 'name',
                     key: 'name',
-                    width:"150px"
+                    width: "150px"
                 },
                 {
                     title: 'oldprice',
@@ -47,7 +47,7 @@ class Shopping extends Component {
                     title: '上新',
                     dataIndex: 'residue',
                     key: 'residue',
-                    width:" 100px",
+                    width: " 100px",
                 },
                 {
                     title: '库存',
@@ -79,20 +79,28 @@ class Shopping extends Component {
                     key: 'action',
                     fixed: 'right',
                     width: "130px",
-                    render: (text, record) => (
-                        <>
-
+                    render:(text, record)=>{
+                        if(this.state.quanxian=="初级"){
+                          return  <>
+                           
+                            <Button type="primary" size="small" onClick={this.changecon.bind(this, text)}>编辑</Button>
+                            <Button type="danger" size="small" onClick={this.removeItem.bind(this, text)} disabled>删除</Button>
+                        </>
+                        }else{
+                          return  <>
+                           
                             <Button type="primary" size="small" onClick={this.changecon.bind(this, text)}>编辑</Button>
                             <Button type="danger" size="small" onClick={this.removeItem.bind(this, text)}>删除</Button>
                         </>
-                    ),
+                        }
+                    }
                 },
             ],
             data: [],
-      
+            quanxian:'',
             show: "none",
             text: {},
-            ok:false
+            ok: false
 
 
 
@@ -104,12 +112,12 @@ class Shopping extends Component {
 
         this.changecon = this.changecon.bind(this)
         this.nocheck = this.nocheck.bind(this)
-        this.onChangeValue = this.onChangeValue.bind(this) 
+        this.onChangeValue = this.onChangeValue.bind(this)
 
         this.removeItem = this.removeItem.bind(this)
     }
 
-    modelfunction(data){
+    modelfunction(data) {
         let res = []
         data.forEach(element => {
 
@@ -118,13 +126,13 @@ class Shopping extends Component {
                 title: element.title,
                 middletitle: element.middletitle,
                 imgurl: element.imgurl,
-                oldprice:element.oldprice,
-                newprice:element.newprice,
-                residue:element.residue,
-                inventory:element.inventory,
-                name:element.name,
-                status_txt:element.status_txt,
-                sales_type:element.sales_type
+                oldprice: element.oldprice,
+                newprice: element.newprice,
+                residue: element.residue,
+                inventory: element.inventory,
+                name: element.name,
+                status_txt: element.status_txt,
+                sales_type: element.sales_type
             })
         })
 
@@ -132,50 +140,57 @@ class Shopping extends Component {
             data: res
         })
     }
-    async componentDidMount() {
-
-        let { data } = await api.getgood('/like', {"select":''})
-    
+    async componentWillMount() {
+        let htid = localStorage.getItem('htid')
+        let { data } = await api.getgood('/like', { "select": '' })
+        let { data: { quanxian} } = await api.getuser('/havetoken', { id: htid })
         this.modelfunction(data)
         this.setState({
-            ok:true
+            ok: true
         })
-       
+        this.setState({
+            quanxian
+        })
 
     }
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+            return
+        }
 
-  async search(value) {   
-        let val =value.replace(/\s+/g,""); 
-        let titlearr = [/女装/,/男装/,/母婴/,/鞋子/,/箱包/,/居家百货/,/家电数码/,/内衣配饰/,/美妆/,/运动户外/,/美食/,/车品文娱/,/通讯旅游/]
-        
+    }
+    async search(value) {
+        let val = value.replace(/\s+/g, "");
+        let titlearr = [/女装/, /男装/, /母婴/, /鞋子/, /箱包/, /居家百货/, /家电数码/, /内衣配饰/, /美妆/, /运动户外/, /美食/, /车品文娱/, /通讯旅游/]
+
         let endval;
-        
-        let titleReg= titlearr.some((item,i)=>{ 
-            if(item.exec(val)!= null) {
-                endval=item.exec(val)
+
+        let titleReg = titlearr.some((item, i) => {
+            if (item.exec(val) != null) {
+                endval = item.exec(val)
                 return item
-            }          
-          
+            }
+
         })
-       
+
         //大分类为真
-        if(titleReg){
-          
-            let result1 = await api.getgood('/list', {'title':endval[0]})
+        if (titleReg) {
+
+            let result1 = await api.getgood('/list', { 'title': endval[0] })
             this.modelfunction(result1.data)
-        }else{
-            let result2 = await api.getgood('/like', {"select":val})
+        } else {
+            let result2 = await api.getgood('/like', { "select": val })
             this.modelfunction(result2.data)
         }
-       
-        
 
-       
-        
-        
+
+
+
+
+
     }
 
-    
+
 
     changecon(text) {
 
@@ -192,8 +207,8 @@ class Shopping extends Component {
     async okcheck() {
         //   console.log("text",this.state.text);
         // api.getgood('/list')
-        let { key, title, middletitle, imgurl,oldprice ,newprice,residue,inventory, name,status_txt,sales_type} = this.state.text
-        let res = await api.patchgood(`/${key}`, { title, middletitle, imgurl ,oldprice ,newprice,residue,inventory, name,status_txt,sales_type})
+        let { key, title, middletitle, imgurl, oldprice, newprice, residue, inventory, name, status_txt, sales_type } = this.state.text
+        let res = await api.patchgood(`/${key}`, { title, middletitle, imgurl, oldprice, newprice, residue, inventory, name, status_txt, sales_type })
         this.setState({
             show: "none"
         })
@@ -206,7 +221,7 @@ class Shopping extends Component {
             show: "none"
         })
         this.setState({
-            text:{}
+            text: {}
         })
     }
 
@@ -224,9 +239,9 @@ class Shopping extends Component {
 
     removeItem(text) {
 
-        api.removegood(`${text.key}`, {        
+        api.removegood(`${text.key}`, {
             colname: "listgoods",
-            id:text.key
+            id: text.key
         })
 
 
@@ -240,58 +255,58 @@ class Shopping extends Component {
 
     }
     render() {
-        let { columns, data} = this.state
-      
+        let { columns, data } = this.state
+
 
         return (<div style={{ padding: "10px" }}>
             <div>分类管理 / 分类列表</div>
 
 
-            <Spin style={{display:!this.state.ok ? "block":"none"}} className="spin"/>
-            <div style={{display:this.state.ok ? "block":"none"}}>
-            <Row gutter={16} type="flex" justify="start" style={{ margin: "20px 0" }}>
-               
-               <Col span={24}>
-                   <Input.Search
-                       placeholder=""
-                       enterButton="搜索"
-                       size="large"
-                       onSearch={this.search}
+            <Spin style={{ display: !this.state.ok ? "block" : "none" }} className="spin" />
+            <div style={{ display: this.state.ok ? "block" : "none" }}>
+                <Row gutter={16} type="flex" justify="start" style={{ margin: "20px 0" }}>
 
-                   />
-               </Col>
-           </Row>
-          
-           <Table columns={columns} dataSource={data} scroll={{ x:1500, y: 300 }}/>
-           <div className="blockbox" style={{ display: this.state.show }}>
-               <div>编辑商品</div>
+                    <Col span={24}>
+                        <Input.Search
+                            placeholder=""
+                            enterButton="搜索"
+                            size="large"
+                            onSearch={this.search}
 
-               <div>
-                   {
-                   
-                       Object.keys(this.state.text).map((key) => {
-                           if (key === 'key') {
-                               return <label key={key}>
-                                   {key}:
+                        />
+                    </Col>
+                </Row>
+
+                <Table columns={columns} dataSource={data} scroll={{ x: 1500, y: 300 }} />
+                <div className="blockbox" style={{ display: this.state.show }}>
+                    <div>编辑商品</div>
+
+                    <div>
+                        {
+
+                            Object.keys(this.state.text).map((key) => {
+                                if (key === 'key') {
+                                    return <label key={key}>
+                                        {key}:
                                <Input defaultValue={this.state.text[key]} disabled />
-                               </label>
-                           }
-                           return <label key={key}>
-                               {key}:
+                                    </label>
+                                }
+                                return <label key={key}>
+                                    {key}:
                                <Input defaultValue={this.state.text[key]} onChange={this.onChangeValue.bind(null, key)} />
-                           </label>
-                       })
-                   }
+                                </label>
+                            })
+                        }
 
-                   <div style={{ marginTop: "30px" }}>
-                       <Button onClick={this.okcheck}>确定</Button>
-                       <Button onClick={this.nocheck}>取消</Button>
-                   </div>
+                        <div style={{ marginTop: "30px" }}>
+                            <Button onClick={this.okcheck}>确定</Button>
+                            <Button onClick={this.nocheck}>取消</Button>
+                        </div>
 
-               </div>
-           </div>
+                    </div>
+                </div>
             </div>
-           
+
         </div >)
 
 

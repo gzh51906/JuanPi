@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import "../css/home.css"
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout, Menu, Button, Icon } from 'antd';
 const { Header, Sider, Content, Footer } = Layout;
 const { SubMenu } = Menu;
 
@@ -14,6 +14,8 @@ import Shoppinglist from '../component/Shoppinglist'
 import updateuser from '../component/updateuser'
 import Updateuser from '../component/updateuser';
 import axios from 'axios'
+import { connect } from 'react-redux'
+import Api from '@/api'
 
 
 
@@ -22,12 +24,13 @@ class Home extends Component {
         super()
         this.state = {
             collapsed: false,
-            quanxian: '',
-            menu: []
+            menu: [],
+            user:''
         };
 
         this.onCollapse = this.onCollapse.bind(this)
         this.menuClick = this.menuClick.bind(this)
+        this.tologinout= this.tologinout.bind(this)
     }
 
 
@@ -35,9 +38,10 @@ class Home extends Component {
         this.setState({ collapsed });
     };
     async componentDidMount() {
+        console.log('sss', this.props);
 
         let token = localStorage.getItem('htAuthorization')
-        let quanxian = localStorage.getItem('htquanxian')
+        let htid = localStorage.getItem('htid')
 
         // token验证
         let { data: { data } } = await axios.get('http://localhost:3003/verify', {
@@ -45,192 +49,221 @@ class Home extends Component {
         })
 
         if (data.authorization) {
+            try {
+                let { data: { quanxian ,username} } = await Api.getuser('/havetoken', { id: htid })
+                //   权限                    
+                let menu;
+                if (quanxian == "初级") {
+                    menu = [
+                        {
+                            title: '分类管理',
+                            icon: "mail",
+                            sco: [
+                                {
+                                    name: '分类列表',
+                                    path: '/fenleilist',
+                                    disabled: false
+                                }, {
+                                    name: '添加分类',
+                                    path: '/addfenlei',
+                                    disabled: false
+                                },
+                            ],
+                            disabled: false
+                        },
+                        {
+                            title: '商品管理',
+                            icon: "shop",
+                            sco: [
+                                {
+                                    name: '商品列表',
+                                    path: '/shoppinglist',
+                                    disabled: false
+                                }, {
+                                    name: '添加商品',
+                                    path: '/addshopping',
+                                    disabled: false
+                                }
+                            ],
+                            disabled: false
+                        },
+                        {
+                            title: '订单管理',
+                            icon: "file-done",
+                            sco: [
+                                {
+                                    name: '待处理订单',
+                                    path: '/dingdan',
+                                    disabled: false
+                                }
+                            ],
+                            disabled: false
+                        },
+                        {
+                            title: '用户管理',
+                            icon: "user",
+                            sco: [
+                                {
+                                    name: '添加用户',
+                                    path: '/adduser',
+                                    disabled: false
+                                }, {
+                                    name: '修改用户信息',
+                                    path: '/updateuser',
+                                    disabled: false
+                                }
+
+                            ],
+                            disabled: true
+                        }
+                    ]
+                }
+                if (quanxian == "中级") {
+                    menu = [{
+                        title: '分类管理',
+                        icon: "mail",
+                        sco: [
+                            {
+                                name: '分类列表',
+                                path: '/fenleilist',
+                                disabled: false
+                            }, {
+                                name: '添加分类',
+                                path: '/addfenlei',
+                                disabled: false
+                            },
+                        ],
+                        disabled: false
+                    },
+                    {
+                        title: '商品管理',
+                        icon: "shop",
+                        sco: [
+                            {
+                                name: '商品列表',
+                                path: '/shoppinglist',
+                                disabled: false
+                            }, {
+                                name: '添加商品',
+                                path: '/addshopping',
+                                disabled: false
+                            }
+                        ],
+                        disabled: false
+                    },
+                    {
+                        title: '订单管理',
+                        icon: "file-done",
+                        sco: [
+                            {
+                                name: '待处理订单',
+                                path: '/dingdan',
+                                disabled: false
+                            }
+                        ],
+                        disabled: false
+                    },
+                    {
+                        title: '用户管理',
+                        icon: "user",
+                        sco: [
+                            {
+                                name: '添加用户',
+                                path: '/adduser',
+                                disabled: true
+                            }, {
+                                name: '修改用户信息',
+                                path: '/updateuser',
+                                disabled: true
+                            }
+
+                        ],
+                        disabled: false
+                    }]
+
+                }
+                if (quanxian == "高级") {
+                    menu = [
+                        {
+                            title: '分类管理',
+                            icon: "mail",
+                            sco: [
+                                {
+                                    name: '分类列表',
+                                    path: '/fenleilist',
+                                    disabled: false
+                                }, {
+                                    name: '添加分类',
+                                    path: '/addfenlei',
+                                    disabled: false
+                                },
+                            ],
+                            disabled: false
+                        },
+                        {
+                            title: '商品管理',
+                            icon: "shop",
+                            sco: [
+                                {
+                                    name: '商品列表',
+                                    path: '/shoppinglist',
+                                    disabled: false
+                                }, {
+                                    name: '添加商品',
+                                    path: '/addshopping',
+                                    disabled: false
+                                }
+                            ],
+                            disabled: false
+                        },
+                        {
+                            title: '订单管理',
+                            icon: "file-done",
+                            sco: [
+                                {
+                                    name: '待处理订单',
+                                    disabled: false,
+                                    path: '/dingdan'
+                                }
+                            ],
+                            disabled: false
+                        },
+                        {
+                            title: '用户管理',
+                            icon: "user",
+                            sco: [
+                                {
+                                    name: '添加用户',
+                                    path: '/adduser',
+                                    disabled: false
+                                }, {
+                                    name: '修改用户信息',
+                                    path: '/updateuser',
+                                    disabled: false
+                                }
+
+                            ],
+                            disabled: false
+                        }
+                    ]
+                }
+
+                this.setState({
+                    menu
+                })
+                this.setState({
+                    user:username
+                })
+
+            } catch (err) {
+                alert('请重新登陆')
+            }
+
 
         } else {
             this.props.history.push('/')
         }
 
-        //   权限
-        console.log('quanxian',quanxian,quanxian==="初级");
-
-        let menu;
-        if (quanxian == "初级") {
-            menu = [
-                {
-                    title: '分类管理',
-                    icon: "mail",
-                    sco: [
-                        {
-                            name: '分类列表',
-                            path: '/fenleilist'
-                        }, {
-                            name: '添加分类',
-                            path: '/addfenlei'
-                        },
-                    ],
-                    disabled: false
-                },
-                {
-                    title: '商品管理',
-                    icon: "shop",
-                    sco: [
-                        {
-                            name: '商品列表',
-                            path: '/shoppinglist'
-                        }, {
-                            name: '添加商品',
-                            path: '/addshopping'
-                        }
-                    ],
-                    disabled: false
-                },
-                {
-                    title: '订单管理',
-                    icon: "file-done",
-                    sco: [
-                        {
-                            name: '待处理订单',
-                            path: '/dingdan'
-                        }
-                    ],
-                    disabled: false
-                },
-                {
-                    title: '用户管理',
-                    icon: "user",
-                    sco: [
-                        {
-                            name: '添加用户',
-                            path: '/adduser'
-                        }, {
-                            name: '修改用户信息',
-                            path: '/updateuser'
-                        }
-
-                    ],
-                    disabled: true
-                }
-            ]
-        }
-        if (quanxian = "中级") {
-            menu = [{
-                title: '分类管理',
-                icon: "mail",
-                sco: [
-                    {
-                        name: '分类列表',
-                        path: '/fenleilist'
-                    }, {
-                        name: '添加分类',
-                        path: '/addfenlei'
-                    },
-                ],
-                disabled: false
-            },
-            {
-                title: '商品管理',
-                icon: "shop",
-                sco: [
-                    {
-                        name: '商品列表',
-                        path: '/shoppinglist'
-                    }, {
-                        name: '添加商品',
-                        path: '/addshopping'
-                    }
-                ],
-                disabled: false
-            },
-            {
-                title: '订单管理',
-                icon: "file-done",
-                sco: [
-                    {
-                        name: '待处理订单',
-                        path: '/dingdan'
-                    }
-                ],
-                disabled: false
-            },
-            {
-                title: '用户管理',
-                icon: "user",
-                sco: [
-                    {
-                        name: '添加用户',
-                        path: '/adduser'
-                    }, {
-                        name: '修改用户信息',
-                        path: '/updateuser'
-                    }
-
-                ],
-                disabled: false
-            }]
-
-        }
-        if (quanxian = "高级") {
-           menu=[
-            {
-                title: '分类管理',
-                icon: "mail",
-                sco: [
-                    {
-                        name: '分类列表',
-                        path: '/fenleilist'
-                    }, {
-                        name: '添加分类',
-                        path: '/addfenlei'
-                    },
-                ],
-                disabled: false
-            },
-            {
-                title: '商品管理',
-                icon: "shop",
-                sco: [
-                    {
-                        name:   '商品列表',
-                        path: '/shoppinglist'
-                    }, {
-                        name:  '添加商品',
-                        path: '/addshopping'
-                    }                    
-                ],
-                disabled: false
-            },
-            {
-                title: '订单管理',
-                icon: "file-done",
-                sco: [
-                    {
-                        name:   '待处理订单',
-                        path: '/dingdan'
-                    }                     
-                ],
-                disabled: false
-            },
-            {
-                title: '用户管理',
-                icon: "user",
-                sco: [
-                    {
-                        name:  '添加用户',
-                        path: '/adduser'
-                    }, {
-                        name:  '修改用户信息',
-                        path: '/updateuser'
-                    }                    
-                    
-                ],
-                disabled: false
-            }
-           ]
-        }
-
-        this.setState({
-            menu
-        })
 
     }
 
@@ -240,9 +273,12 @@ class Home extends Component {
 
     }
 
-
+  tologinout(){
+this.props.loginout();
+this.props.history.push('/')
+  }
     render() {
-        let { menu } = this.state
+        let { menu,user } = this.state
         let { path } = this.props.match
         return (
             <div style={{ width: "100%", height: "100%" }}>
@@ -250,6 +286,7 @@ class Home extends Component {
                     <Header style={{ background: "#b3c0d1", textAlign: "center" }}>
                         <img src={require("~~/59ca3863a9fcf823cd42cfcb_84x60.png")} alt="" className="logo" />
                         <span className="home-title"> 卷皮后台管理系统</span>
+                        <div className="loginout"><span className="loginspan">{user}</span> <Button type="link" onClick={this.tologinout}>退出登陆</Button></div>
 
                     </Header>
                     <Layout className="home-bottom">
@@ -262,8 +299,6 @@ class Home extends Component {
 
 
                                         if (item.sco) {
-                                            console.log(item);
-                                            
                                             return (<SubMenu
                                                 disabled={item.disabled}
                                                 key={item.title}
@@ -278,7 +313,7 @@ class Home extends Component {
                                             >
                                                 {
                                                     item.sco.map(ele => {
-                                                        return <Menu.Item key={ele.path} >{ele.name}</Menu.Item>
+                                                        return <Menu.Item key={ele.path} disabled={ele.disabled}>{ele.name}</Menu.Item>
 
                                                     })
                                                 }
@@ -321,5 +356,19 @@ class Home extends Component {
 }
 
 
+let mapStateToProps = function (state) {
+    return {
+        state
+    }
+}
+let mapDispatchToProps = function (dispatch) {
+    return {
+      loginout(){
+          dispatch({type:'logout'})
+      }
+    }
+}
+
+Home = connect(mapStateToProps, mapDispatchToProps)(Home)
 
 export default Home;

@@ -9,7 +9,75 @@ class Fenleilist extends Component {
     constructor() {
         super();
         this.state = {
-            columns: [
+            columns: [      
+            ],
+            data: [],
+            resmenu: [],
+            select: "全部",
+            show: "none",
+            text: {}
+        }
+
+        this.search = this.search.bind(this)
+        this.onselect = this.onselect.bind(this)
+        this.changecon = this.changecon.bind(this)
+        this.okcheck = this.okcheck.bind(this)
+        this.nocheck = this.nocheck.bind(this)
+        this.onChangeValue = this.onChangeValue.bind(this)
+        this.removeItem = this.removeItem.bind(this)
+    }
+    async componentWillMount() {
+
+        let { data } = await api.getgood('/listnav', {})
+        let res = []
+        let menu = ['全部']
+        let htid = localStorage.getItem('htid')
+        data.forEach(element => {
+            res.push({
+                key: element._id,
+                title: element.title,
+                middletitle: element.middletitle,
+                imgurl: element.imgurl
+            })
+            menu.push(element.title)
+
+        })
+        let { data: { quanxian} } = await api.getuser('/havetoken', { id: htid })
+        let columns;
+
+        if(quanxian=="初级"){
+            columns=[
+                {
+                    title: 'title',
+                    dataIndex: 'title',
+                    key: 'title',
+                    render: text => <a>{text}</a>,
+                },
+                {
+                    title: 'middletitle',
+                    dataIndex: 'middletitle',
+                    key: 'middletitle',
+                },
+                {
+                    title: 'imgurl',
+                    dataIndex: 'imgurl',
+                    key: 'imgurl',
+                },
+
+                {
+                    title: 'Action',
+                    key: 'action',
+                    render: (text, record) => (
+                        <>
+
+                            <Button type="primary" size="small" onClick={this.changecon.bind(this, text)}>编辑</Button>
+                            <Button type="danger" size="small" onClick={this.removeItem.bind(this, text)} disabled>删除</Button>
+                        </>
+                    ),
+                },
+            ]
+        }else{
+            columns=[
                 {
                     title: 'title',
                     dataIndex: 'title',
@@ -38,43 +106,9 @@ class Fenleilist extends Component {
                         </>
                     ),
                 },
-            ],
-            data: [],
-            resmenu: [],
-            select: "全部",
-            show: "none",
-            text: {}
-
-
-
+            ]
         }
-
-        this.search = this.search.bind(this)
-        this.onselect = this.onselect.bind(this)
-        this.changecon = this.changecon.bind(this)
-        this.okcheck = this.okcheck.bind(this)
-        this.nocheck = this.nocheck.bind(this)
-        this.onChangeValue = this.onChangeValue.bind(this)
-        this.removeItem = this.removeItem.bind(this)
-    }
-    async componentDidMount() {
-
-        let { data } = await api.getgood('/listnav', {})
-        let res = []
-        let menu = ['全部']
-        //  this.state.data.push(data)
-        data.forEach(element => {
-
-            res.push({
-                key: element._id,
-                title: element.title,
-                middletitle: element.middletitle,
-                imgurl: element.imgurl
-            })
-            menu.push(element.title)
-
-        })
-
+       
         this.setState({
             data: res
         })
@@ -82,7 +116,17 @@ class Fenleilist extends Component {
         this.setState({
             resmenu
         })
+        this.setState({
+           columns
+        })
 
+
+    }
+
+    componentWillUnMount (){
+        this.setState = (state, callback) => {
+            return
+          }
     }
 
     search(value) {
@@ -130,13 +174,9 @@ class Fenleilist extends Component {
     }
 
     onselect(val) {
-
         this.setState({
             select: val
         })
-
-
-
     }
     changecon(text) {
         this.setState({
@@ -148,8 +188,6 @@ class Fenleilist extends Component {
 
     }
     async okcheck() {
-        //   console.log("text",this.state.text);
-        // api.getgood('/list')
         let { key, title, middletitle, imgurl } = this.state.text
         let res = await api.patchgood(`/listnav/${key}`, { title, middletitle, imgurl })
         this.setState({
