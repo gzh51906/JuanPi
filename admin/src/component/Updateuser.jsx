@@ -63,7 +63,7 @@ class Updateuser extends Component {
         this.modelfunction = this.modelfunction.bind(this)
         this.onChangepass = this.onChangepass.bind(this)
     }
-    async componentWillMount() {
+    async componentDidMount() {
 
         let { data } = await api.getuser('', {})
         let res = []
@@ -76,8 +76,6 @@ class Updateuser extends Component {
                 password: element.password,
                 quanxian: element.quanxian
             })
-
-
         })
 
         this.setState({
@@ -164,9 +162,7 @@ componentWillUnMount () {
                      })
                      
                      alert('修改成功')
-                     this.setState({
-                        show: "none"
-                    })
+                    this.nocheck()
                 }else{
                  alert(`权限只有初级中级高级!`)
                 }
@@ -184,9 +180,7 @@ componentWillUnMount () {
                   
                   if(xiugai1.msg==='success'){   
                     alert('修改成功')
-                    this.setState({
-                      show: "none"
-                  })
+                   this.nocheck()
                   }
               
                 

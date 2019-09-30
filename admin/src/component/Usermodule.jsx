@@ -31,7 +31,6 @@ class Usermodule extends React.Component {
         //检查账号是否存在 成功就没有
         if(vall){
           let checkuser =await Api.reguser('/check',{zhanghao:this.state.ryvalue}) 
- 
            if(checkuser.msg=="success"){
             let adduser =await Api.reguser('/reg',{
               zhanghao:this.state.ryvalue,
@@ -39,12 +38,12 @@ class Usermodule extends React.Component {
               password,
               quanxian:this.props.quanxian
              
-            }) 
-            if(adduser.msg==='success'){
-              message.success(`添加成功`); 
+            })       
+              message.success(`添加成功`);       
+               
+           }else{
+            message.success(`账号已经存在`);         
           }
-        
-           }
         }else{
           alert('请生成账号')
         }

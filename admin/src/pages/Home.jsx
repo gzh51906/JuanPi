@@ -38,8 +38,6 @@ class Home extends Component {
         this.setState({ collapsed });
     };
     async componentDidMount() {
-        console.log('sss', this.props);
-
         let token = localStorage.getItem('htAuthorization')
         let htid = localStorage.getItem('htid')
 

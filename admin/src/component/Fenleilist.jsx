@@ -5,6 +5,7 @@ import api from '../api/index.jsx'
 import { log } from 'util';
 
 import '../css/fenlei.css'
+
 class Fenleilist extends Component {
     constructor() {
         super();
@@ -25,8 +26,33 @@ class Fenleilist extends Component {
         this.nocheck = this.nocheck.bind(this)
         this.onChangeValue = this.onChangeValue.bind(this)
         this.removeItem = this.removeItem.bind(this)
+        this.modelfunction= this.modelfunction.bind(this)
     }
-    async componentWillMount() {
+
+   async modelfunction(data){
+    
+    let menu = ['全部']
+        let res = []
+        data.forEach(element => {
+            res.push({
+                key: element._id,
+                title: element.title,
+                middletitle: element.middletitle,
+                imgurl: element.imgurl
+            })
+            menu.push(element.title)
+
+        })
+        this.setState({
+            data: res
+        })
+        let resmenu = [...new Set(menu)]
+        this.setState({
+            resmenu
+        })
+    }
+   
+    async componentDidMount() {
 
         let { data } = await api.getgood('/listnav', {})
         let res = []
@@ -129,47 +155,32 @@ class Fenleilist extends Component {
           }
     }
 
-    search(value) {
+   async search(value) {
         let tit = this.state.select;
-        let res = [...this.state.data]
-
-        let aa
-
+  
         if (tit === '全部') {
             if (value === '') {
-                aa = res
+                let { data } = await api.getgood('/listnav', {})
+                this.modelfunction(data)
             } else {
-                aa = res.filter(item => {
-                    if (item.middletitle === value) {
-                        return item
-                    }
-                })
+                let { data } = await api.getgood('/listnavselect', {title:tit})
+
+                this.modelfunction(data)
             }
 
 
         } else {
             if (value == '') {
-                aa = res.filter(item => {
-                    if (item.title === tit) {
-                        return item
-                    }
-                })
+             let {data}= await api.getgood('/listnavselect',{title:tit})
+             this.modelfunction(data)
             } else {
 
-                aa = res.filter(item => {
-                    if (item.title === tit && item.middletitle === value) {
-                        return item
-                    }
-
-                })
+                let {data}= await api.getgood('/listnavselect',{title:tit,middletitle:value})
+             this.modelfunction(data)
             }
 
 
         }
-
-        this.setState({
-            data: aa
-        })
 
     }
 
@@ -190,8 +201,12 @@ class Fenleilist extends Component {
     async okcheck() {
         let { key, title, middletitle, imgurl } = this.state.text
         let res = await api.patchgood(`/listnav/${key}`, { title, middletitle, imgurl })
+       
         this.setState({
             show: "none"
+        })
+        this.setState({
+            text:{}
         })
         alert("修改成功")
 

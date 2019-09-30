@@ -140,7 +140,7 @@ class Shopping extends Component {
             data: res
         })
     }
-    async componentWillMount() {
+    async componentDidMount() {
         let htid = localStorage.getItem('htid')
         let { data } = await api.getgood('/like', { "select": '' })
         let { data: { quanxian} } = await api.getuser('/havetoken', { id: htid })
@@ -183,11 +183,6 @@ class Shopping extends Component {
             this.modelfunction(result2.data)
         }
 
-
-
-
-
-
     }
 
 
@@ -208,11 +203,17 @@ class Shopping extends Component {
         //   console.log("text",this.state.text);
         // api.getgood('/list')
         let { key, title, middletitle, imgurl, oldprice, newprice, residue, inventory, name, status_txt, sales_type } = this.state.text
-        let res = await api.patchgood(`/${key}`, { title, middletitle, imgurl, oldprice, newprice, residue, inventory, name, status_txt, sales_type })
+        let res = await api.patchgood(`/shopping/${key}`, { title, middletitle, imgurl, oldprice, newprice, residue, inventory, name, status_txt, sales_type })
+      if(res.msg==="success"){
         this.setState({
             show: "none"
         })
         alert("修改成功")
+      }else{
+       this.nocheck()
+        alert("修改失败")
+      }
+  
 
     }
 
@@ -238,21 +239,26 @@ class Shopping extends Component {
 
 
     removeItem(text) {
-
-        api.removegood(`${text.key}`, {
-            colname: "listgoods",
-            id: text.key
-        })
-
-
-        let res = this.state.data.filter(item => {
-            return item.key != text.key
-        })
-        this.setState({
-            data: res
-        })
-        alert('删除成功')
-
+        var r = confirm("确定删除？");
+        if (r == true) {
+            api.removegood(`/${text.key}`, {
+                colname: text.title,
+                id: text.key
+            })
+    
+    
+            let res = this.state.data.filter(item => {
+                return item.key != text.key
+            })
+            this.setState({
+                data: res
+            })
+            alert('删除成功')
+    
+        } else {
+          
+        }
+     
     }
     render() {
         let { columns, data } = this.state
@@ -285,7 +291,7 @@ class Shopping extends Component {
                         {
 
                             Object.keys(this.state.text).map((key) => {
-                                if (key === 'key') {
+                                if (key === 'key'||key==="title") {
                                     return <label key={key}>
                                         {key}:
                                <Input defaultValue={this.state.text[key]} disabled />

@@ -71,7 +71,7 @@ export default {
     addgood,
     getuser,
     reguser,
-    removeuser,
+    removeuser
     // source
   
 }
